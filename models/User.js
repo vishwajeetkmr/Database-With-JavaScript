@@ -31,14 +31,16 @@ User.prototype.validate = function() {
     if (this.data.username.length > 30) {this.errors.push("Username cannot exceed 30 characters.")}
 }
 
-User.prototype.login = async function(callback) {
-    this.clanUp()
+User.prototype.login = function(callback) {
+    return new Promise(async(resolve, reject) => {
+      this.clanUp()
     const attemptedUser = await usersCollection.findOne({username: this.data.username})
     if (attemptedUser && attemptedUser.password == this.data.password) {
-        callback("Congrats!")
+        resolve("Congrats!")
     } else {
-        callback("Invalid username / password")    
-    }
+        reject("Invalid username / password")    
+    }  
+    }) 
 }
 
 User.prototype.register = function () {
