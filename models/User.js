@@ -36,7 +36,7 @@ User.prototype.login = function(callback) {
     return new Promise(async(resolve, reject) => {
       this.clanUp()
     const attemptedUser = await usersCollection.findOne({username: this.data.username})
-    if (attemptedUser && attemptedUser.password == this.data.password) {
+    if (attemptedUser && bcrypt.compareSync(this.data.password, attemptedUser.password)) {
         resolve("Congrats!")
     } else {
         reject("Invalid username / password")    
